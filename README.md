@@ -4,7 +4,7 @@ Scripts in TCL and Ruby for automating the power monitor circuit available in so
 
 ## Background
 
-Some kits from Altera include an LTC2148 ADC whose differential inputs are
+Some kits from Altera® include an LTC2148 ADC whose differential inputs are
 connected to shunt resistors in series with the power rails that supply 
 current to the FPGA. The ADC is controller by an SLD node that can be 
 controlled via JTAG using the System Console application.
@@ -44,6 +44,9 @@ open                 0.005 A    Rail 7    0x16 0x0
 
 If you want, you can bypass the Ruby script and run the TCL script with System Console:
 
+```
+\altera\14.0\quartus\sopc_builder\bin\system-console --script=read_power_rails.tcl
+```
 
 ## Compatibility
 
@@ -52,13 +55,26 @@ This script has been tested with:
 * Cyclone IV GX Transceiver Starter Kit
 * Cyclone IV GX FPGA Development Kit
 
-However, it should be possible to run it with little changes in other platforms. Please let me know if you succeed in doing so.
+### Adapting to other FPGA boards and environments
+
+It should be possible to run it with little changes in other platforms compatible with the Power Monitor™ infrastructure. Here are some directions:
+
+* Change the value of QUARTUS_DIR in the Ruby script if it is not `\altera\13.0sp1\quartus`
+* Each of the two supported boards have different procedures for reading the ADC samples. You may have to adapt proc read_adc_channel in the TCL script.
+* The Ruby script is preconfigured with board information for the two mentioned kits. If you need to change it to support another kit:
+   * Find the place in the Ruby script where the variable `rails` is set.
+   * Look up the power rail names in the Power Monitor GUI and board schematics.
+   * Look up the resistor values on the SMD resistors and in the board schematics.
+   * Update the column `ADC_idx` with the index of the ADC channels for each rail.
+   * Update the colum `Rail #` with the values you see when you run the TCL script.
+
+Please let me know if you succeed in doing so or if you need any help.
 
 ## License
 
 Public domain. Do with this code whatever you want, just don't hold me responsible for anything.
 
-If you find it useful, please drop me a note, so that I can gauge how much effort to put into this project. ☺
+If you find it useful, please drop me a note so that I can gauge how much effort to put into this project. :)
 
 ## Legal
 
